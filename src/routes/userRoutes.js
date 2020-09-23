@@ -1,8 +1,7 @@
 const express = require("express");
+const { hiBabe } = require("../controllers/user");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("Hello Ecommerce!");
-});
+router.get("/", hiBabe);
 
 module.exports = router;

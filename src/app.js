@@ -1,7 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const fs = require("fs");
-const userRoute = require("./routes/userRoute");
+const userRoutes = require("./routes/userRoutes");
 require("dotenv").config();
 
 const app = express();
@@ -14,7 +14,7 @@ connectDB();
 app.use(express.json());
 
 //@Routes
-app.use(userRoute);
+app.use("/api", userRoutes);
 
 //@Morgan for logging http req
 // create a write stream (in append mode)
