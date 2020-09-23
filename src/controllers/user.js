@@ -14,7 +14,3 @@ exports.signup = async (req, res) => {
     console.log("Unable to save user to the DB");
   }
 };
-
-exports.view = (req, res) => {
-  res.send("Hey you...");
-};
