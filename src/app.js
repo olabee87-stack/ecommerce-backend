@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 const fs = require("fs");
 const userRoutes = require("./routes/userRoutes");
 require("dotenv").config();
@@ -10,20 +11,18 @@ const app = express();
 const connectDB = require("./config/db");
 connectDB();
 
-//@pass incoming json to an object
-app.use(express.json());
-
-//@Routes
-app.use("/api", userRoutes);
-
-//@Morgan for logging http req
 // create a write stream (in append mode)
 const accessLogStream = fs.createWriteStream(__dirname + "/access.log", {
   flags: "a",
 });
 
-// setup the logger
-app.use(morgan("combined", { stream: accessLogStream }));
+//@Middlewares
+app.use(express.json());
+app.use(cookieParser());
+app.use(morgan("combined", { stream: accessLogStream })); //to log http requests
+
+//@Routes
+app.use("/api", userRoutes);
 
 //@Listening Port
 const port = process.env.PORT || 8000;

@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const validator = require("validator"); //to add vaidation to schema objects
-const uuid = require("uuid/v1");
+const { v1: uuidv1 } = require("uuid");
 const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema(
@@ -16,22 +15,10 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: 32,
       lowercase: true,
-      validate(value) {
-        if (!validator.isEmail(value)) {
-          throw new Error("Invalid email");
-        }
-      },
     },
     hashed_password: {
       type: String,
       required: true,
-      minlength: 7,
-      trim: true,
-      validate(value) {
-        if (value.toLowerCase().includes("password")) {
-          throw new Error(`Password cannot include the word 'password'`);
-        }
-      },
     },
     about: {
       type: String,
@@ -57,14 +44,12 @@ const userSchema = new mongoose.Schema(
 userSchema
   .virtual("password")
   .set(function (password) {
-    const user = this;
-
-    user._password = password;
-    user.salt = uuidv1();
-    user._password = user.encryptPassword(password);
+    this._password = password;
+    this.salt = uuidv1();
+    this.hashed_password = this.encryptPassword(password);
   })
   .get(function () {
-    return user._password;
+    return this._password;
   });
 
 userSchema.methods = {
@@ -72,7 +57,7 @@ userSchema.methods = {
     if (!password) return "";
     try {
       return crypto
-        .createHmac("sha1", user.salt)
+        .createHmac("sha1", this.salt)
         .update(password)
         .digest("hex");
     } catch (err) {
