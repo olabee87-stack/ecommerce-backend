@@ -66,5 +66,16 @@ userSchema.methods = {
   },
 };
 
+//@Hide hashed password and salt from view
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.hashed_password;
+  delete userObject.salt;
+
+  return userObject;
+};
+
 const User = new mongoose.model("User", userSchema);
 module.exports = User;
