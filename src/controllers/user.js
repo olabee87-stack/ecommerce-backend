@@ -2,7 +2,8 @@ const User = require("../models/user");
 const { errorHandler } = require("../helpers/dbErrorHandler"); //handle DB error msg
 
 //@All logics of the userRoutes
-//Exported to the user routes to be called in the routes
+
+//@User signUp validator - registration
 exports.signup = async (req, res) => {
   const user = new User(req.body);
 
