@@ -1,10 +1,12 @@
 const express = require("express");
+require("dotenv").config();
 const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
-const expressValidator = require("express-validator");
+
 const fs = require("fs");
 const userRoutes = require("./routes/userRoutes");
-require("dotenv").config();
+
+const cookieParser = require("cookie-parser");
+const expressValidator = require("express-validator");
 
 const app = express();
 

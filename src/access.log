@@ -47,3 +47,7 @@
 ::1 - - [24/Sep/2020:10:14:15 +0000] "POST /api/signin HTTP/1.1" 200 252 "-" "PostmanRuntime/7.26.5"
 ::1 - - [24/Sep/2020:10:14:21 +0000] "GET /api/signout HTTP/1.1" 404 150 "-" "PostmanRuntime/7.26.5"
 ::1 - - [24/Sep/2020:10:16:25 +0000] "GET /api/signout HTTP/1.1" 200 29 "-" "PostmanRuntime/7.26.5"
+::1 - - [24/Sep/2020:14:46:19 +0000] "GET /api/he HTTP/1.1" 200 6 "-" "PostmanRuntime/7.26.5"
+::1 - - [24/Sep/2020:14:48:54 +0000] "GET /api/greet HTTP/1.1" 401 2027 "-" "PostmanRuntime/7.26.5"
+::1 - - [24/Sep/2020:14:49:20 +0000] "POST /api/signin HTTP/1.1" 200 252 "-" "PostmanRuntime/7.26.5"
+::1 - - [24/Sep/2020:14:49:55 +0000] "GET /api/greet HTTP/1.1" 401 2027 "-" "PostmanRuntime/7.26.5"

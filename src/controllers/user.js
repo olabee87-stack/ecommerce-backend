@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken"); //to generate signed token
 const expressJwt = require("express-jwt"); //for authorization check
+require("dotenv");
 
 const { errorHandler } = require("../helpers/dbErrorHandler"); //handle DB error msg
 
@@ -61,5 +62,12 @@ exports.signout = (req, res) => {
   res.json({ message: "Signout Success" });
 };
 
-//
+//@Middleware to ensure that only logged in users can access routes
+//@secret compares the secret used for the token generation with the user tryig to access the route
+exports.requireSignin = expressJwt({
+  secret: process.env.JWT_SECRET,
+  algorithms: ["HS256"], // added later
+  userProperty: "auth",
+});
+
 //@Shipped off to the user route..
