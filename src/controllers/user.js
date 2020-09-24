@@ -17,3 +17,5 @@ exports.signup = async (req, res) => {
     console.log("Unable to save user to the DB");
   }
 };
+
+//@Shipped off to the user route..

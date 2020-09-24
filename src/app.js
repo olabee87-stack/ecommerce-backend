@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const expressValidator = require("express-validator");
 const fs = require("fs");
 const userRoutes = require("./routes/userRoutes");
 require("dotenv").config();
@@ -20,6 +21,7 @@ const accessLogStream = fs.createWriteStream(__dirname + "/access.log", {
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("combined", { stream: accessLogStream })); //to log http requests
+app.use(expressValidator()); //validate user's input
 
 //@Routes
 app.use("/api", userRoutes);
