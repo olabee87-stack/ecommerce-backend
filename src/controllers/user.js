@@ -61,7 +61,5 @@ exports.signout = (req, res) => {
   res.json({ message: "Signout Success" });
 };
 
-// app.get('/logout', (req, res) => {
-//   res.clearCookie('token');
-//   return res.status(200).redirect('/login');
+//
 //@Shipped off to the user route..

@@ -46,3 +46,4 @@
 ::1 - - [24/Sep/2020:10:12:39 +0000] "GET /api/signout HTTP/1.1" 404 150 "-" "PostmanRuntime/7.26.5"
 ::1 - - [24/Sep/2020:10:14:15 +0000] "POST /api/signin HTTP/1.1" 200 252 "-" "PostmanRuntime/7.26.5"
 ::1 - - [24/Sep/2020:10:14:21 +0000] "GET /api/signout HTTP/1.1" 404 150 "-" "PostmanRuntime/7.26.5"
+::1 - - [24/Sep/2020:10:16:25 +0000] "GET /api/signout HTTP/1.1" 200 29 "-" "PostmanRuntime/7.26.5"
