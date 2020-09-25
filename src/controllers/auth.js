@@ -5,7 +5,7 @@ require("dotenv");
 
 const { errorHandler } = require("../helpers/dbErrorHandler"); //handle DB error msg
 
-//@All logics of the userRoutes
+//@All logics of the userAuthRoutes(routes.auth.js)
 
 //@User signUp validator - registration
 exports.signup = async (req, res) => {
@@ -17,7 +17,7 @@ exports.signup = async (req, res) => {
     console.log("Saved new user to the db:", user);
   } catch (err) {
     res.status(400).json({
-      err: errorHandler(err),
+      error: errorHandler(error),
     });
     console.log("Unable to save user to the DB");
   }
@@ -44,12 +44,10 @@ exports.signin = async (req, res) => {
           .status(401)
           .json({ error: "Email and password do not match" });
       }
-
-      // const user = this
-      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET); //auth token - .env
-      //rename token as 't' and include expiry date
-      res.cookie("t", token, { expire: new Date() + 9999 }); //expires in 9999 milliseconds
-      //return response with user and token to the frontend client
+      //rename token as 't' and include expiry date + (9999 miliseconds) - line 50
+      //return response with user and token to the frontend client 51-52
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET); //auth-token-secret - .env
+      res.cookie("t", token, { expire: new Date() + 9999 });
       const { _id, name, email, role } = user;
       return res.json({ token, user: { _id, email, name, role } });
     }
@@ -57,21 +55,23 @@ exports.signin = async (req, res) => {
 };
 
 //@Sign out
+//Simply clears all the token ('t')cookies
 exports.signout = (req, res) => {
   res.clearCookie("t");
   res.json({ message: "Signout Success" });
 };
 
 //@Middleware to ensure that only logged in users can access routes
-//@secret compares the secret used for the token generation with the user tryig to access the route
+//@secret compares the secret used for the token generation with the user trying to access the route
 exports.requireSignin = expressJwt({
   secret: process.env.JWT_SECRET,
-  algorithms: ["HS256"], // added later
+  algorithms: ["HS256"],
   userProperty: "auth",
 });
 
 //@Middleware for logged in user
-//@req.auth - from the userProperty - auth
+//@req.auth - from the userProperty - auth - line 69
+//@req.profile - variable that houses the instance of a user - set on user.js controller
 exports.isAuth = (req, res, next) => {
   let user = req.profile && req.auth && req.profile._id == req.auth._id;
   if (!user) {
