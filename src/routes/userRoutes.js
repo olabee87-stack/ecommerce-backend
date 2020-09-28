@@ -7,6 +7,9 @@ const { userById } = require("../controllers/user");
 router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
   res.json({ user: req.profile });
 });
+router.get("/", (req, res) => {
+  res.send("Hi baby");
+});
 
 //run the userById method anytime there is a user's Id parameter in the route
 //Makes user info (profile) available in the req object

@@ -2,11 +2,14 @@ const express = require("express");
 require("dotenv").config();
 const morgan = require("morgan");
 const fs = require("fs");
-const userAuthRoutes = require("./routes/auth"); //user authentication
-const userRoutes = require("./routes/userRoutes");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const expressValidator = require("express-validator");
+
+//@Import Routes
+const userAuthRoutes = require("./routes/auth"); //user authentication
+const userRoutes = require("./routes/userRoutes");
+const categoryRoutes = require("./routes/category");
 
 const app = express();
 
@@ -26,9 +29,10 @@ app.use(morgan("combined", { stream: accessLogStream })); //to log http requests
 app.use(expressValidator()); //validate user's input
 app.use(cors());
 
-//@Routes
+//@Routes Middleware
 app.use("/api", userAuthRoutes);
 app.use("/api", userRoutes);
+app.use("/api", categoryRoutes);
 
 //@Listening Port
 const port = process.env.PORT || 8000;
