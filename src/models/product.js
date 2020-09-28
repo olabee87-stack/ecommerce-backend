@@ -30,7 +30,7 @@ const productSchema = new mongoose.Schema(
     },
     photo: {
       data: Buffer,
-      contentType: String,
+      contentType: String, //image type... jpg, png etc
     },
     shipping: {
       required: false,
@@ -44,3 +44,5 @@ const productSchema = new mongoose.Schema(
 
 const Product = new mongoose.model("Product", productSchema);
 module.exports = Product;
+
+//Ship off to product controller

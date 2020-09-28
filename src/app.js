@@ -10,6 +10,7 @@ const expressValidator = require("express-validator");
 const userAuthRoutes = require("./routes/auth"); //user authentication
 const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/category");
+const productRoutes = require("./routes/product");
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use(cors());
 app.use("/api", userAuthRoutes);
 app.use("/api", userRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api", productRoutes);
 
 //@Listening Port
 const port = process.env.PORT || 8000;
