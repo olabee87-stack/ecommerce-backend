@@ -18,9 +18,9 @@ exports.productById = async (req, res, next, id) => {
 };
 
 //@Read a single product
-exports.read = () => {
+exports.read = (req, res) => {
   req.product.photo = undefined;
-  return res.json(req.product);
+  return res.json({ product: req.product });
 };
 
 //@Create Product
