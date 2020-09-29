@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-//@Product Controller
+//@Product Controller/Middleware
 const { create, productById, read } = require("../controllers/product");
 
 //@Auth Middleware
