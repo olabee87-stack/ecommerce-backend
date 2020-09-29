@@ -2,7 +2,7 @@ const formidable = require("formidable");
 const _ = require("lodash");
 const Product = require("../models/product");
 const fs = require("fs");
-const {errorHandler} = require('../helpers/dbErrorHandler')
+const { errorHandler } = require("../helpers/dbErrorHandler");
 
 exports.create = async (req, res) => {
   let form = new formidable.IncomingForm(); //all form data will be available from here
@@ -11,24 +11,45 @@ exports.create = async (req, res) => {
     if (err) {
       return res.status(400).json({ error: "Image could not be uploaded!" });
     }
+
+    //check that fields are correct
+    const { name, description, price, category, quantity, shipping } = fields;
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !category ||
+      !quantity ||
+      !shipping
+    ) {
+      return res.status(400).json({
+        error: "All fields are required!",
+      });
+    }
+
     let product = new Product(fields); //create new product with fields received into the req
 
-    //if photo was passed on the clientside
+    //if photo was passed on the clientside - 1kb=1000, 1mb=1000000
     if (files.photo) {
+      if (files.photo.size > 1000000) {
+        return res.status(400).json({
+          error: "Image should be less than 1mb in size",
+        });
+      }
       product.photo.data = fs.readFileSync(files.photo.path); //photo.data - coming from the product model
       product.photo.contentType = files.photo.type; //also from the product model - contentType eg png, jpet etc
     }
 
-    try{
-        await product.save()
-        res.status(201).json({
-            product
-        })
-        console.log('Created a new product', product)
-    }catch(err){
-        return res.status(400).json({
-            error:errorHandler(err)
-        })
+    try {
+      product.save();
+      res.status(201).json({
+        product,
+      });
+      console.log("Created a new product", product);
+    } catch (err) {
+      return res.status(400).json({
+        error: errorHandler(err),
+      });
     }
   });
 };
