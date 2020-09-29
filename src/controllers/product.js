@@ -74,6 +74,58 @@ exports.create = async (req, res) => {
   });
 };
 
+//@Update a product
+exports.update = (req, res) => {
+  let form = new formidable.IncomingForm(); //all form data will be available from here
+  form.keepExtensions = true; //keep all photo extensions- eg jpg, png etc
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      return res.status(400).json({ error: "Image could not be uploaded!" });
+    }
+
+    //check that fields are correct
+    const { name, description, price, category, quantity, shipping } = fields;
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !category ||
+      !quantity ||
+      !shipping
+    ) {
+      return res.status(400).json({
+        error: "All fields are required!",
+      });
+    }
+
+    let product = req.product; //update product with fields received into the req
+    product = _.extend(product, fields); //merge updated fields into the product - lodash ext.
+
+    if (files.photo) {
+      if (files.photo.size > 1000000) {
+        return res.status(400).json({
+          error: "Image should be less than 1mb in size",
+        });
+      }
+      product.photo.data = fs.readFileSync(files.photo.path); //photo.data - coming from the product model
+      product.photo.contentType = files.photo.type; //also from the product model - contentType eg png, jpet etc
+    }
+
+    try {
+      product.save();
+      res.json({
+        product,
+        Message: "Update Successful!",
+      });
+      console.log("Update a product", product);
+    } catch (err) {
+      return res.status(400).json({
+        error: errorHandler(err),
+      });
+    }
+  });
+};
+
 //Delete a Product
 exports.remove = async (req, res) => {
   let product = req.product;
