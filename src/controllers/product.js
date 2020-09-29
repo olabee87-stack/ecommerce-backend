@@ -4,7 +4,7 @@ const Product = require("../models/product");
 const fs = require("fs");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
-//Product by Id -
+//@Find a single product
 exports.productById = async (req, res, next, id) => {
   await Product.findById(id).exec((err, product) => {
     if (err || !product) {
@@ -17,6 +17,13 @@ exports.productById = async (req, res, next, id) => {
   });
 };
 
+//@Read a single product
+exports.read = () => {
+  req.product.photo = undefined;
+  return res.json(req.product);
+};
+
+//@Create Product
 exports.create = async (req, res) => {
   let form = new formidable.IncomingForm(); //all form data will be available from here
   form.keepExtensions = true; //keep all photo extensions- eg jpg, png etc
