@@ -4,6 +4,19 @@ const Product = require("../models/product");
 const fs = require("fs");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
+//Product by Id -
+exports.productById = async (req, res, next, id) => {
+  await Product.findById(id).exec((err, product) => {
+    if (err || !product) {
+      res.status(400).json({
+        error: "Product with the given ID is not found!",
+      });
+    }
+    req.product = product; //make found project available in the req.object
+    next();
+  });
+};
+
 exports.create = async (req, res) => {
   let form = new formidable.IncomingForm(); //all form data will be available from here
   form.keepExtensions = true; //keep all photo extensions- eg jpg, png etc
