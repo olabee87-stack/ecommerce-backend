@@ -132,3 +132,6 @@
 ::1 - - [29/Sep/2020:04:21:37 +0000] "GET /api/product/5f71b64f4f475c15f4db484d HTTP/1.1" 400 51 "-" "PostmanRuntime/7.26.5"
 ::1 - - [29/Sep/2020:04:23:34 +0000] "POST /api/product/create/5f71b64f4f475c15f4db484d HTTP/1.1" 201 18483 "-" "PostmanRuntime/7.26.5"
 ::1 - - [29/Sep/2020:04:24:10 +0000] "GET /api/product/5f72b6c63e60902bb8e1bd4f HTTP/1.1" 500 2039 "-" "PostmanRuntime/7.26.5"
+::1 - - [29/Sep/2020:04:25:50 +0000] "GET /api/product/5f72b6c63e60902bb8e1bd4f HTTP/1.1" 200 302 "-" "PostmanRuntime/7.26.5"
+::1 - - [29/Sep/2020:04:44:27 +0000] "DELETE /api/product/5f72b6c63e60902bb8e1bd4f/5f71b64f4f475c15f4db484d HTTP/1.1" 401 2062 "-" "PostmanRuntime/7.26.5"
+::1 - - [29/Sep/2020:04:46:01 +0000] "DELETE /api/product/5f72b6c63e60902bb8e1bd4f/5f71b64f4f475c15f4db484d HTTP/1.1" 200 18610 "-" "PostmanRuntime/7.26.5"

@@ -74,4 +74,20 @@ exports.create = async (req, res) => {
   });
 };
 
+//Delete a Product
+exports.remove = async (req, res) => {
+  let product = req.product;
+
+  try {
+    await product.remove();
+    res.json({
+      Message: "Product successfully deleted",
+    });
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler(err),
+    });
+  }
+};
+
 //Ship off to product route
