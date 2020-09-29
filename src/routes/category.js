@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { create } = require("../controllers/category");
+const { create, categoryById, read } = require("../controllers/category");
 
 const { userById } = require("../controllers/user");
 
@@ -9,10 +9,12 @@ const { userById } = require("../controllers/user");
 const { requireSignin, isAdmin, isAuth } = require("../controllers/auth");
 
 //route
+router.get("/category/:categoryId", read);
 router.post("/category/create/:userId", requireSignin, isAuth, isAdmin, create);
 
 //@userById - a middleware func - gets the id of the category creator - See Below line 19-21 for more comments
 router.param("userId", userById);
+router.param("categoryId", categoryById);
 
 module.exports = router;
 
