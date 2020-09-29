@@ -4,7 +4,7 @@ const Product = require("../models/product");
 const fs = require("fs");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
-//@Find a single product
+//@Find a single product by Id
 exports.productById = async (req, res, next, id) => {
   await Product.findById(id).exec((err, product) => {
     if (err || !product) {
