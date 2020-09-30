@@ -142,4 +142,31 @@ exports.remove = async (req, res) => {
   }
 };
 
+/**
+ * @Fetch user based on the user's query param -
+ * by sell = /products?sortBy=sold&order=desc&limit=4
+ * by arrival = /products?sortBy=createdAt&order=asc&limit=4
+ * if no query params, return all products
+ */
+
+exports.list = async (req, res) => {
+  let order = req.query.order ? req.query.order : "asc"; //order is asc by default
+  let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+  let limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 6;
+
+  try {
+    const product = await Product.find()
+      .select("-photo")
+      .populate("category") //populate products by category - ref Category model
+      .sort([[sortBy, order]])
+      .limit(limit);
+
+    res.json({ product });
+  } catch (err) {
+    return res.status(404).json({
+      error: errorHandler(err),
+    });
+  }
+};
+
 //Ship off to product route

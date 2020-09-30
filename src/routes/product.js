@@ -8,6 +8,7 @@ const {
   read,
   remove,
   update,
+  list,
 } = require("../controllers/product");
 
 //@Auth Middleware
@@ -18,6 +19,8 @@ const { userById } = require("../controllers/user");
 
 //Route
 router.get("/product/:productId", read); //read
+
+router.get("/products", list); //List all products
 
 router.post("/product/create/:userId", requireSignin, isAuth, isAdmin, create); //create
 
