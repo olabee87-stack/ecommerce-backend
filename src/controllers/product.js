@@ -169,4 +169,24 @@ exports.list = async (req, res) => {
   }
 };
 
+//@List all products based on the req.product.category
+//returns all products(except the one in the req.product) belonging to the same category
+exports.listRelated = async (req, res) => {
+  let limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 6;
+
+  try {
+    const products = await Product.find({
+      _id: { $ne: req.product },
+      category: req.product.category,
+    })
+      .limit(limit)
+      .populate("category", "_id name");
+    res.json({ products });
+  } catch (err) {
+    return res.status(400).json({
+      error: "Products not found!",
+    });
+  }
+};
+
 //Ship off to product route
