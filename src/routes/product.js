@@ -12,6 +12,7 @@ const {
   listRelated,
   listCategories,
   listBySearch,
+  photo,
 } = require("../controllers/product");
 
 //@Auth Middleware
@@ -25,6 +26,7 @@ router.get("/product/:productId", read); //read
 router.get("/products", list); //List all products
 router.get("/products/related/:productId", listRelated); //@list related products
 router.get("/products/categories", listCategories); //@list all categories based on products
+router.get("/product/photo/:productId", photo);
 router.post("/products/by/search", listBySearch); //@api call to the backend by users, based on wants
 router.post("/product/create/:userId", requireSignin, isAuth, isAdmin, create); //create
 

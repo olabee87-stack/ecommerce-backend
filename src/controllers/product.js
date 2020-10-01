@@ -242,4 +242,13 @@ exports.listBySearch = async (req, res) => {
   }
 };
 
+//@Return product photo - will work like a middleware when a req is made to the route
+exports.photo = async (req, res, next) => {
+  if (req.product.photo.data) {
+    res.set("Content-Type", req.product.photo.contentType);
+    return res.send(req.product.photo.data);
+  }
+  next();
+};
+
 //Ship off to product route
