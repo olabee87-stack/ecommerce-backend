@@ -202,7 +202,7 @@ exports.listCategories = async (req, res) => {
   }
 };
 
-//@List products based on users' search on the client
+//@List products based on users' search on the client (categories in checkbox, price range in radio btn)
 //api call will be make to the backend based on the user's search
 exports.listBySearch = async (req, res) => {
   let order = req.body.order ? req.body.order : "desc";
