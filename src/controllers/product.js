@@ -3,6 +3,7 @@ const _ = require("lodash");
 const Product = require("../models/product");
 const fs = require("fs");
 const { errorHandler } = require("../helpers/dbErrorHandler");
+const { sortBy } = require("lodash");
 
 //@Find a single product by Id
 exports.productById = async (req, res, next, id) => {
@@ -182,6 +183,63 @@ exports.listRelated = async (req, res) => {
       .limit(limit)
       .populate("category", "_id name");
     res.json({ products });
+  } catch (err) {
+    return res.status(400).json({
+      error: "Products not found!",
+    });
+  }
+};
+
+//@List all categories based on products - Categories distinct to products ONLY
+exports.listCategories = async (req, res) => {
+  try {
+    const categoriesofProducts = await Product.distinct("category", {});
+    res.json({ categoriesofProducts });
+  } catch (err) {
+    return res.status(400).json({
+      error: "Categories not found",
+    });
+  }
+};
+
+//@List products based on users' search on the client
+//api call will be make to the backend based on the user's search
+exports.listBySearch = async (req, res) => {
+  let order = req.body.order ? req.body.order : "desc";
+  let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+  let limit = req.body.limit ? parseInt(req.body.limit) : 100;
+  let skip = parseInt(req.body.skip);
+  let findArgs = {};
+
+  //console.log(order, sortBy, limit, skip, req.body.filters)
+  //console.log('findArgs', findArgs)
+
+  for (let key in req.body.filters) {
+    if (req.body.filters[key].length > 0) {
+      if (key === "price") {
+        //gte - greater than price [0-10]
+        //lte - less than
+        findArgs[key] = {
+          $gte: req.body.filters[key][0],
+          $lte: req.body.filters[key][1],
+        };
+      } else {
+        findArgs[key] = req.body.filters[key];
+      }
+    }
+  }
+
+  try {
+    const products = await Product.find(findArgs)
+      .select("-photo")
+      .populate("category")
+      .sort([[sortBy, order]])
+      .skip(skip)
+      .limit(limit);
+    res.json({
+      size: products.length,
+      products,
+    });
   } catch (err) {
     return res.status(400).json({
       error: "Products not found!",

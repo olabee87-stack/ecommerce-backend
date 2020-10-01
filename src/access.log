@@ -182,3 +182,6 @@
 ::1 - - [30/Sep/2020:07:53:23 +0000] "GET /api/products/related/5f71d7637f3107361c4f627a HTTP/1.1" 200 476353 "-" "PostmanRuntime/7.26.5"
 ::1 - - [30/Sep/2020:07:53:58 +0000] "GET /api/products HTTP/1.1" 200 1643 "-" "PostmanRuntime/7.26.5"
 ::1 - - [30/Sep/2020:07:55:32 +0000] "GET /api/products/related/5f71d7637f3107361c4f627a HTTP/1.1" 200 476305 "-" "PostmanRuntime/7.26.5"
+::1 - - [30/Sep/2020:07:58:04 +0000] "GET /api/products/related/5f71d7637f3107361c4f627a HTTP/1.1" 200 476353 "-" "PostmanRuntime/7.26.5"
+::1 - - [01/Oct/2020:06:35:10 +0000] "GET /api/products/categories HTTP/1.1" 200 53 "-" "PostmanRuntime/7.26.5"
+::1 - - [01/Oct/2020:06:35:42 +0000] "GET /api/category/5f7418c9281e0b4a307bc68d HTTP/1.1" 200 162 "-" "PostmanRuntime/7.26.5"
