@@ -209,19 +209,14 @@ exports.listBySearch = async (req, res) => {
   let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
   let limit = req.body.limit ? parseInt(req.body.limit) : 100;
   let skip = parseInt(req.body.skip);
-  let findArgs = {};
-
-  //console.log(order, sortBy, limit, skip, req.body.filters)
-  //console.log('findArgs', findArgs)
+  let findArgs = {}; //contains categoryID and price range - populate based on req.body
 
   for (let key in req.body.filters) {
     if (req.body.filters[key].length > 0) {
       if (key === "price") {
-        //gte - greater than price [0-10]
-        //lte - less than
         findArgs[key] = {
-          $gte: req.body.filters[key][0],
-          $lte: req.body.filters[key][1],
+          $gte: req.body.filters[key][0], //@gte - greater than price[0-10]
+          $lte: req.body.filters[key][1], //@lte - less than
         };
       } else {
         findArgs[key] = req.body.filters[key];
