@@ -3,9 +3,8 @@ const _ = require("lodash");
 const Product = require("../models/product");
 const fs = require("fs");
 const { errorHandler } = require("../helpers/dbErrorHandler");
-const { sortBy } = require("lodash");
 
-//@Find a single product by Id
+//@Find a single product by Id - Use as a middleware in products route to find the ID in the params
 exports.productById = async (req, res, next, id) => {
   await Product.findById(id).exec((err, product) => {
     if (err || !product) {
@@ -23,6 +22,53 @@ exports.read = (req, res) => {
   req.product.photo = undefined;
   return res.json({ product: req.product });
 };
+
+//@List all search
+exports.listSearch = async (req, res) => {
+  //create query object to hold sear value and category value
+  const query = {};
+
+  //assign search value to query.name
+  if (req.query.search) {
+    query.name = { $regex: req.query.search, $options: "i" };
+  }
+
+  //assign category value to query.category
+  if (req.query.category && req.query.category != "All") {
+    query.category = req.query.category;
+  }
+
+  //find the product based on query product with 2 properties  - search and category
+  try {
+    const products = await Product.find(query).select("-photo");
+    res.json(products);
+  } catch (err) {
+    return res.status(404).json({
+      error: errorHandler(err),
+    });
+  }
+};
+
+// exports.listSearch = async (req, res) => {
+//   const query = {};
+
+//   if (req.query.search) {
+//     query.name = { $regex: req.query.search, $options: "i" };
+//   }
+
+//   if (req.query.category && req.query.category != "All") {
+//     query.category = req.query.category;
+//   }
+
+//   await Product.find(query, (err, products) => {
+//     if (err) {
+//       return res.status(404).json({
+//         error: errorHandler(err),
+//       });
+//     }
+//     res.json(products);
+//   }).select("-photo");
+// };
 
 //@Create Product
 exports.create = async (req, res) => {

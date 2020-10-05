@@ -9,6 +9,7 @@ const {
   remove,
   update,
   list,
+  listSearch,
   listRelated,
   listCategories,
   listBySearch,
@@ -23,6 +24,7 @@ const { userById } = require("../controllers/user");
 
 //Route
 router.get("/product/:productId", read); //read
+router.get("/products/search", listSearch);
 router.get("/products", list); //List all products
 router.get("/products/related/:productId", listRelated); //@list related products
 router.get("/products/categories", listCategories); //@list all categories based on products
