@@ -162,7 +162,7 @@ exports.list = async (req, res) => {
       .sort([[sortBy, order]])
       .limit(limit);
 
-    res.json({ product });
+    res.json( product );
   } catch (err) {
     return res.status(404).json({
       error: errorHandler(err),
@@ -204,42 +204,86 @@ exports.listCategories = async (req, res) => {
 
 //@List products based on users' search on the client (categories in checkbox, price range in radio btn)
 //api call will be make to the backend based on the user's search
-exports.listBySearch = async (req, res) => {
+// exports.listBySearch = async (req, res) => {
+//   let order = req.body.order ? req.body.order : "desc";
+//   let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+//   let limit = req.body.limit ? parseInt(req.body.limit) : 100;
+//   let skip = parseInt(req.body.skip);
+//   let findArgs = {}; //contains categoryID and price range - populate based on req.body
+
+//   for (let key in req.body.filters) {
+//     if (req.body.filters[key].length > 0) {
+//       if (key === "price") {
+//         findArgs[key] = {
+//           $gte: req.body.filters[key][0], //@gte - greater than price[0-10]
+//           $lte: req.body.filters[key][1], //@lte - less than
+//         };
+//       } else {
+//         findArgs[key] = req.body.filters[key];
+//       }
+//     }
+//   }
+
+//   try {
+//     const products = await Product.find(findArgs)
+//       .select("-photo")
+//       .populate("category")
+//       .sort([[sortBy, order]])
+//       .skip(skip)
+//       .limit(limit);
+//     res.json({
+//       size: products.length,
+//       products,
+//     });
+//   } catch (err) {
+//     return res.status(400).json({
+//       error: "Products not found!",
+//     });
+//   }
+// };
+
+exports.listBySearch = (req, res) => {
   let order = req.body.order ? req.body.order : "desc";
   let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
   let limit = req.body.limit ? parseInt(req.body.limit) : 100;
   let skip = parseInt(req.body.skip);
-  let findArgs = {}; //contains categoryID and price range - populate based on req.body
+  let findArgs = {};
+
+  // console.log(order, sortBy, limit, skip, req.body.filters);
+  // console.log("findArgs", findArgs);
 
   for (let key in req.body.filters) {
-    if (req.body.filters[key].length > 0) {
-      if (key === "price") {
-        findArgs[key] = {
-          $gte: req.body.filters[key][0], //@gte - greater than price[0-10]
-          $lte: req.body.filters[key][1], //@lte - less than
-        };
-      } else {
-        findArgs[key] = req.body.filters[key];
+      if (req.body.filters[key].length > 0) {
+          if (key === "price") {
+              // gte -  greater than price [0-10]
+              // lte - less than
+              findArgs[key] = {
+                  $gte: req.body.filters[key][0],
+                  $lte: req.body.filters[key][1]
+              };
+          } else {
+              findArgs[key] = req.body.filters[key];
+          }
       }
-    }
   }
 
-  try {
-    const products = await Product.find(findArgs)
+  Product.find(findArgs)
       .select("-photo")
       .populate("category")
       .sort([[sortBy, order]])
       .skip(skip)
-      .limit(limit);
-    res.json({
-      size: products.length,
-      products,
-    });
-  } catch (err) {
-    return res.status(400).json({
-      error: "Products not found!",
-    });
-  }
+      .limit(limit)
+      .exec((err, data) => {
+          if (err) {
+              return res.status(400).json({
+                  error: "Products not found"
+              });
+          }
+          res.json({
+              size: data.length,
+              data
+          });
+      });
 };
 
 //@Return product photo - will work like a middleware when a req is made to the route

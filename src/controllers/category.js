@@ -36,9 +36,17 @@ exports.read = (req, res) => {
 
 //@Read all categories
 exports.list = async (req, res) => {
+//   Category.find().exec((err, data) => {
+// if(err) {
+//   return res.status(400).json({
+//     error: errorHandler(err)
+//   })
+// }
+// res.json(data);
+//   })
   try {
     const category = await Category.find();
-    res.json({ category });
+    res.json(category);
   } catch (err) {
     res.status(400).json({ error: errorHandler(err) });
   }
