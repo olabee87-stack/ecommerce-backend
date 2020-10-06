@@ -187,7 +187,7 @@ exports.list = async (req, res) => {
       .sort([[sortBy, order]])
       .limit(limit);
 
-    res.json({ product });
+    res.json(product);
   } catch (err) {
     return res.status(404).json({
       error: errorHandler(err),
@@ -250,7 +250,7 @@ exports.listBySearch = async (req, res) => {
   }
 
   try {
-    const products = await Product.find(findArgs)
+    const data = await Product.find(findArgs)
       .select("-photo")
       .populate("category")
       .sort([[sortBy, order]])
@@ -258,7 +258,7 @@ exports.listBySearch = async (req, res) => {
       .limit(limit);
     res.json({
       size: products.length,
-      products,
+      data,
     });
   } catch (err) {
     return res.status(400).json({
