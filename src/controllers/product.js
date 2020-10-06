@@ -49,27 +49,6 @@ exports.listSearch = async (req, res) => {
   }
 };
 
-// exports.listSearch = async (req, res) => {
-//   const query = {};
-
-//   if (req.query.search) {
-//     query.name = { $regex: req.query.search, $options: "i" };
-//   }
-
-//   if (req.query.category && req.query.category != "All") {
-//     query.category = req.query.category;
-//   }
-
-//   await Product.find(query, (err, products) => {
-//     if (err) {
-//       return res.status(404).json({
-//         error: errorHandler(err),
-//       });
-//     }
-//     res.json(products);
-//   }).select("-photo");
-// };
-
 //@Create Product
 exports.create = async (req, res) => {
   let form = new formidable.IncomingForm(); //all form data will be available from here
