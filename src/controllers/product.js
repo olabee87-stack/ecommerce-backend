@@ -257,7 +257,7 @@ exports.listBySearch = async (req, res) => {
       .skip(skip)
       .limit(limit);
     res.json({
-      size: products.length,
+      size: data.length,
       data,
     });
   } catch (err) {
