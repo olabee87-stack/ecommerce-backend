@@ -20,3 +20,29 @@ exports.generateToken = (req, res) => {
     }
   });
 };
+
+//@Process payment method
+//get payment method and total amount from client
+
+exports.processPayment = (req, res) => {
+  let nonceFromTheClient = req.body.paymentMethodNonce;
+  let amountFromTheClient = req.body.amount;
+
+  //charge the user
+  let newTransaction = gateway.transaction.sale(
+    {
+      amount: amountFromTheClient,
+      paymentMethodNonce: nonceFromTheClient,
+      options: {
+        submitForSettlement: true,
+      },
+    },
+    (error, result) => {
+      if (error) {
+        res.status(500).json(error);
+      } else {
+        res.json(result);
+      }
+    }
+  );
+};
