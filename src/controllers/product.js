@@ -278,4 +278,6 @@ exports.photo = async (req, res, next) => {
   next();
 };
 
+//@Middleware - to decrease product quantity in the DB whenever a product is purchased
+exports.decreaseQuantity = async (req, res) => {};
 //Ship off to product route
