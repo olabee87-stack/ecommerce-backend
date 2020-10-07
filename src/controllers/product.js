@@ -20,7 +20,7 @@ exports.productById = async (req, res, next, id) => {
 //@Read a single product
 exports.read = (req, res) => {
   req.product.photo = undefined;
-  return res.json({ product: req.product });
+  return res.json(req.product);
 };
 
 //@List all search
