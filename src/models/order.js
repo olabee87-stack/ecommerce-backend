@@ -21,7 +21,7 @@ const CartItem = new mongoose.model("CartItem", CartItemSchema);
 //@Order Schema
 const OrderSchema = new mongoose.Schema(
   {
-    products: [CartItemSchema],
+    products: [CartItemSchema], //saving the products with the cartItem schema
     transaction_id: {},
     amount: {
       type: Number,
