@@ -278,6 +278,24 @@ exports.photo = async (req, res, next) => {
   next();
 };
 
-//@Middleware - to decrease product quantity in the DB whenever a product is purchased
-exports.decreaseQuantity = async (req, res) => {};
+//@Middleware - to decrease product quantity in the DB whenever a product is purchased - use in order route
+exports.decreaseQuantity = async (req, res, next) => {
+  let bulkOps = req.body.order.products.map((item) => {
+    return {
+      updateOne: {
+        filter: { _id: item._id },
+        update: { $inc: { quantity: -item.count, sold: +item.count } }, //decr qty, incr sold when purchase is made
+      },
+    };
+  });
+
+  await Product.bulkWrite(bulkOps, {}, (error, products) => {
+    if (error) {
+      res.status(400).json({
+        error: "Could not update product",
+      });
+    }
+    next();
+  });
+};
 //Ship off to product route
