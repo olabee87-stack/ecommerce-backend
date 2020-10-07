@@ -17,3 +17,17 @@ exports.create = async (req, res) => {
     });
   }
 };
+
+//@display orders to the client
+exports.listOrders = async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate("user", "_id name address")
+      .sort("-created");
+    res.json(orders);
+  } catch (error) {
+    return res.status(400).json({
+      error: errorHandler(error),
+    });
+  }
+};
