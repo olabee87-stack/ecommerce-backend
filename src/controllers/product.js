@@ -209,7 +209,7 @@ exports.listRelated = async (req, res) => {
     })
       .limit(limit)
       .populate("category", "_id name");
-    res.json({ products });
+    res.json(products);
   } catch (err) {
     return res.status(400).json({
       error: "Products not found!",
