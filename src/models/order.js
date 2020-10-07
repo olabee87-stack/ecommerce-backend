@@ -21,7 +21,7 @@ const CartItem = new mongoose.model("CartItem", CartItemSchema);
 //@Order Schema
 const OrderSchema = new mongoose.Schema(
   {
-    products: [CartItemSchema], //saving the products with the cartItem schema
+    products: [CartItemSchema], //saving the products with the defined cartItem Schema
     transaction_id: {},
     amount: {
       type: Number,
@@ -29,7 +29,7 @@ const OrderSchema = new mongoose.Schema(
     address: String,
     status: {
       type: String,
-      default: "Not processed",
+      default: "Not processed", //default status, will be changed according to order to the below enum status
       enum: [
         "Not processed",
         "Processing",
@@ -40,7 +40,7 @@ const OrderSchema = new mongoose.Schema(
     },
     updated: Date,
     user: {
-      type: ObjectId,
+      type: ObjectId, //associated User making the order
       ref: "User",
     },
   },
