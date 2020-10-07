@@ -6,15 +6,17 @@ const { errorHandler } = require("../helpers/dbErrorHandler");
 
 //@Find a single product by Id - Use as a middleware in products route to find the ID in the params
 exports.productById = async (req, res, next, id) => {
-  await Product.findById(id).exec((err, product) => {
-    if (err || !product) {
-      res.status(400).json({
-        error: "Product with the given ID is not found!",
-      });
-    }
-    req.product = product; //make found project available in the req.object
-    next();
-  });
+  await Product.findById(id)
+    .populate("category")
+    .exec((err, product) => {
+      if (err || !product) {
+        res.status(400).json({
+          error: "Product with the given ID is not found!",
+        });
+      }
+      req.product = product; //make found project available in the req.object
+      next();
+    });
 };
 
 //@Read a single product
