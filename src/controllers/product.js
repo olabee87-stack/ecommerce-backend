@@ -52,7 +52,7 @@ exports.listSearch = async (req, res) => {
 };
 
 //@Create Product
-exports.create = async (req, res) => {
+exports.create = (req, res) => {
   let form = new formidable.IncomingForm(); //all form data will be available from here
   form.keepExtensions = true; //keep all photo extensions- eg jpg, png etc
   form.parse(req, (err, fields, files) => {

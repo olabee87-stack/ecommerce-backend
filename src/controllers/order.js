@@ -31,3 +31,8 @@ exports.listOrders = async (req, res) => {
     });
   }
 };
+
+//@Display the enum values (created in the order model) to the client
+exports.getStatusValues = (req, res) => {
+  res.json(Order.schema.path("status").enumValues);
+};
