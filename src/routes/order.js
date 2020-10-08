@@ -8,6 +8,7 @@ const {
   listOrders,
   getStatusValues,
   orderById,
+  updateOrderStatus,
 } = require("../controllers/order");
 const { decreaseQuantity } = require("../controllers/product");
 
