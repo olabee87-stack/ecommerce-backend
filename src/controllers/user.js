@@ -1,3 +1,5 @@
+const { errorHandler } = require("../helpers/dbErrorHandler");
+const { Order } = require("../models/order");
 const User = require("../models/user");
 
 //@Middleware to find user by ID in the route.param
@@ -63,6 +65,21 @@ exports.addOrderToUserHistory = async (req, res, next) => {
       next();
     }
   );
+};
+
+//@Show user's purchase history
+exports.purchaseHistory = async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.profile._id })
+      .populate("user", "_id name")
+      .sort("-created");
+
+    res.json(orders);
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler(err),
+    });
+  }
 };
 
 //"Ship of to userRoutes.js"
