@@ -14,6 +14,21 @@ exports.orderById = async (req, res, id, next) => {
     });
 };
 
+//@Update order status with the enum string - send orderId and status from the front end
+exports.updateOrderStatus = async (req, res) => {
+  try {
+    const order = await Order.update(
+      { id: req.body.orderId },
+      { $set: { status: req.body.status } }
+    );
+    res.json(order);
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler(err),
+    });
+  }
+};
+
 //@Show what is sent from the frontend to create a new order
 exports.create = async (req, res) => {
   //@get user before saving order - @req-profile coming from the user db
