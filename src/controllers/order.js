@@ -1,6 +1,30 @@
 const { Order, CartItem } = require("../models/order");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
+//@Find order by Id
+exports.orderById = async (req, res, id, next) => {
+  await Order.findById(id).exec((err, order) => {
+    if (err || !order) {
+      return res.status(400).json({ error: "Order not found!" });
+    }
+    req.order = order;
+    next();
+  });
+};
+
+//Example 2
+// exports.orderById = async (req, res, id, next) => {
+//   try {
+//     const order = await Order.findById(id);
+//     req.order = order;
+//     next();
+//   } catch (err) {
+//     return res.status(400).json({
+//       error: "Order not found",
+//     });
+//   }
+// };
+
 //@Show what is sent from the frontend to create a new order
 exports.create = async (req, res) => {
   //@get user before saving order - @req-profile coming from the user db
