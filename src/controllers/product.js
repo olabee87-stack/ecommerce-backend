@@ -155,12 +155,28 @@ exports.update = (req, res) => {
 };
 
 //Delete a Product
+// exports.remove = async (req, res) => {
+//   let product = req.product;
+
+//   try {
+//     await product.remove();
+//     res.json({
+//       Message: "Product successfully deleted",
+//     });
+//   } catch (err) {
+//     return res.status(400).json({
+//       error: errorHandler(err),
+//     });
+//   }
+// };
+
 exports.remove = async (req, res) => {
   let product = req.product;
 
   try {
     await product.remove();
     res.json({
+      deletedProduct,
       Message: "Product successfully deleted",
     });
   } catch (err) {
@@ -169,6 +185,7 @@ exports.remove = async (req, res) => {
     });
   }
 };
+
 
 /**
  * @Fetch user based on the user's query param -
@@ -209,7 +226,7 @@ exports.listRelated = async (req, res) => {
     })
       .limit(limit)
       .populate("category", "_id name");
-    res.json({ products });
+    res.json(products);
   } catch (err) {
     return res.status(400).json({
       error: "Products not found!",

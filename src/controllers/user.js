@@ -25,7 +25,7 @@ exports.update = async (req, res) => {
       { $set: req.body },
       { new: true }
     );
-    res.json({ user });
+    res.json( {user} );
   } catch (err) {
     res.status(400).json({
       error: "You are not authorised to perform this action",
