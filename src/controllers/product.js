@@ -61,19 +61,19 @@ exports.create = (req, res) => {
     }
 
     //check that fields are correct
-    const { name, description, price, category, quantity, shipping } = fields;
-    if (
-      !name ||
-      !description ||
-      !price ||
-      !category ||
-      !quantity ||
-      !shipping
-    ) {
-      return res.status(400).json({
-        error: "All fields are required!",
-      });
-    }
+    // const { name, description, price, category, quantity, shipping } = fields;
+    // if (
+    //   !name ||
+    //   !description ||
+    //   !price ||
+    //   !category ||
+    //   !quantity ||
+    //   !shipping
+    // ) {
+    //   return res.status(400).json({
+    //     error: "All fields are required!",
+    //   });
+    // }
 
     let product = new Product(fields); //create new product with fields received into the req
 
