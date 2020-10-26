@@ -5,8 +5,8 @@ const { errorHandler } = require("../helpers/dbErrorHandler");
 exports.orderById = async (req, res, id, next) => {
   await Order.findById(id)
     .populate("products.product", "name price")
-    .exec((err, order) => {
-      if (err || !order) {
+    .exec((error, order) => {
+      if (error || !order) {
         return res.status(400).json({ error: errorHandler(error) });
       }
       req.order = order;
