@@ -5,8 +5,22 @@ const fs = require("fs");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
 //@Find a single product by Id - Use as a middleware in products route to find the ID in the params
-exports.productById = async (req, res, next, id) => {
-  await Product.findById(id)
+// exports.productById = async (req, res, next, id) => {
+//   await Product.findById(id)
+//     .populate("category")
+//     .exec((err, product) => {
+//       if (err || !product) {
+//         res.status(400).json({
+//           error: "Product with the given ID is not found!",
+//         });
+//       }
+//       req.product = product; //make found project available in the req.object
+//       next();
+//     });
+// };
+
+exports.productById = (req, res, next, id) => {
+  Product.findById(id)
     .populate("category")
     .exec((err, product) => {
       if (err || !product) {
@@ -39,6 +53,10 @@ exports.listSearch = async (req, res) => {
   if (req.query.category && req.query.category != "All") {
     query.category = req.query.category;
   }
+  //new changes bellow:
+  // if (req.query.category && req.query.category != "All") {
+  //   query.category = { $regex: req.query.category, $option: "i"};
+  // }
 
   //find the product based on query product with 2 properties  - search and category
   try {
@@ -112,19 +130,22 @@ exports.update = (req, res) => {
     }
 
     //check that fields are correct
-    const { name, description, price, category, quantity, shipping } = fields;
-    if (
-      !name ||
-      !description ||
-      !price ||
-      !category ||
-      !quantity ||
-      !shipping
-    ) {
-      return res.status(400).json({
-        error: "All fields are required!",
-      });
-    }
+    // const { name, description, price, category, quantity
+    //  , shipping
+    //  } = fields;
+    // if (
+    //   !name ||
+    //   !description ||
+    //   !price ||
+    //   !category ||
+    //   !quantity
+    //   // !quantity ||
+    //   // !shipping
+    // ) {
+    //   return res.status(400).json({
+    //     error: "All fields are required!",
+    //   });
+    // }
 
     let product = req.product; //update product with fields received into the req
     product = _.extend(product, fields); //merge updated fields into the product - lodash ext.
@@ -139,44 +160,35 @@ exports.update = (req, res) => {
       product.photo.contentType = files.photo.type; //also from the product model - contentType eg png, jpet etc
     }
 
-    try {
-      product.save();
-      res.json({
-        product,
-        Message: "Update Successful!",
-      });
-      console.log("Update a product", product);
-    } catch (err) {
-      return res.status(400).json({
-        error: errorHandler(err),
+    // try {
+    //   product.save();
+    //   res.json({
+    //     product,
+    //     Message: "Update Successful!",
+    //   });
+    //   console.log("Update a product", product);
+    // } catch (err) {
+    //   return res.status(400).json({
+    //     error: errorHandler(err),
+    //   });
+    // }
+    product.save((err, result) => {
+      if(err){res.status(400).json({
+        error: errorHandler(err)
       });
     }
+    res.json(result)
+    })
   });
 };
 
 //Delete a Product
-// exports.remove = async (req, res) => {
-//   let product = req.product;
-
-//   try {
-//     await product.remove();
-//     res.json({
-//       Message: "Product successfully deleted",
-//     });
-//   } catch (err) {
-//     return res.status(400).json({
-//       error: errorHandler(err),
-//     });
-//   }
-// };
-
 exports.remove = async (req, res) => {
   let product = req.product;
 
   try {
     await product.remove();
     res.json({
-      deletedProduct,
       Message: "Product successfully deleted",
     });
   } catch (err) {
@@ -185,6 +197,22 @@ exports.remove = async (req, res) => {
     });
   }
 };
+
+// exports.remove = async (req, res) => {
+//   let product = req.product;
+
+//   try {
+//     await product.remove();
+//     res.json({
+//       deletedProduct,
+//       Message: "Product successfully deleted",
+//     });
+//   } catch (err) {
+//     return res.status(400).json({
+//       error: errorHandler(err),
+//     });
+//   }
+// };
 
 
 /**

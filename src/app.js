@@ -5,7 +5,6 @@ const fs = require("fs");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const expressValidator = require("express-validator");
-
 //@Import Routes
 const userAuthRoutes = require("./routes/auth"); //user authentication
 const userRoutes = require("./routes/userRoutes");
