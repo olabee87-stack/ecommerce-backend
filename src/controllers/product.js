@@ -190,9 +190,9 @@ exports.list = async (req, res) => {
       .limit(limit);
 
     res.json(product);
-  } catch (err) {
+  } catch (error) {
     return res.status(404).json({
-      error: errorHandler(err),
+      error: errorHandler(error),
     });
   }
 };
