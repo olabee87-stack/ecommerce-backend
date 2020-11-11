@@ -32,7 +32,7 @@ app.use(morgan("combined", { stream: accessLogStream })); //to log http requests
 app.use(expressValidator()); //validate user's input
 app.use(cors());
 
-//@Routes Middleware
+//@Routes Middleware -
 app.use("/api", userAuthRoutes);
 app.use("/api", userRoutes);
 app.use("/api", categoryRoutes);
